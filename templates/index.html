@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crimer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-4">Crime Rate Predictor</h1>
+            <p class="lead">Use this tool to predict crime rates for the next few years based on historical data.</p>
+        </div>
+
+        <!-- Error message -->
+        {% if error_message %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+        <!-- Prediction Form -->
+        <div class="card p-4">
+            <form method="POST" action="/predict">
+                <div class="form-group">
+                    <label for="years" class="h5">Enter the number of years to predict:</label>
+                    <input type="number" id="years" name="years" class="form-control" min="1" max="10" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Predict</button>
+            </form>
+        </div>
+
+        {% if prediction %}
+        <div class="card mt-5 p-4">
+            <h4 class="text-center">Forecasted Crime Rates for the Next {{ years }} Years:</h4>
+            <ul class="list-group">
+                {% for value in prediction %}
+                    <li class="list-group-item">Year {{ loop.index }}: {{ value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if graph_html %}
+            <div class="mt-5">
+                {{ graph_html | safe }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
